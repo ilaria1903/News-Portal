@@ -53,13 +53,13 @@ app.UseAuthentication(); // întâi: cine ești?
 app.UseAuthorization();  // apoi: ce ai voie să faci?
 ```
 
-Autentificarea trebuie să ruleze prima — ea citește cookie-ul/token-ul și stabilește **cine ești** (populează `User.Identity`). Abia după aceea, autorizarea poate verifica **ce ai voie să faci**.
+Autentificarea trebuie să ruleze prima — ea citește cookie-ul/token-ul și stabilește **cine ești** (populează `User.Identity`). Abia după aceea, autorizarea poate verifica **ce am voie să fac**.
 
 Dacă le inversăm, în momentul în care `UseAuthorization()` rulează, `User.Identity` nu este încă populat — deci toate verificările de tip `[Authorize]` vor eșua sau vor ignora utilizatorul autentificat, tratându-l ca anonim.
 
 ---
 
-## 5. Ce am fi trebuit să implementăm manual fără ASP.NET Core Identity?
+## 5. Ce ar fi trebuit să implementăm manual fără ASP.NET Core Identity?
 
 Fără Identity, ar fi trebuit să scriem de la zero:
 
@@ -79,12 +79,12 @@ Identity face toate acestea out-of-the-box, testate și securizate.
 
 ## 6. Care sunt dezavantajele ASP.NET Core Identity?
 
-- **Legat de tehnologie** – presupune că folosești Entity Framework Core și o bază de date relațională. Dacă vrei MongoDB sau alt store, trebuie să implementezi interfețe custom.
+- **Dependență de EF Core și SQL** – Identity este construit în jurul Entity Framework Core și bazelor de date relaționale. Dacă proiectul folosește o bază de date NoSQL (ex. MongoDB), trebuie să rescriu manual layer-ul de persistență prin interfețe custom, ceea ce anulează mare parte din comoditatea oferită.
 
-- **Schema rigidă** – tabelele generate (`AspNetUsers`, `AspNetRoles` etc.) sunt greu de modificat sau migrat într-un alt sistem. Dacă vrei să muți utilizatorii în altă platformă, e complicat.
+- **Schema impusă, greu de schimbat** – Identity generează automat tabele cu nume și structură fixe (`AspNetUsers`, `AspNetRoles` etc.). Dacă ulterior vreau să schimb schema sau să migrez utilizatorii într-un alt sistem de autentificare, procesul este anevoios și predispus la erori.
 
-- **Nepotrivit pentru API-uri mobile/SPA** – Identity este gândit pentru aplicații server-side cu cookie-uri. Dacă expui un API consumat de Angular sau o aplicație mobilă, ai nevoie de **JWT tokens**, nu cookie-uri de sesiune — ceea ce necesită configurare suplimentară.
+- **Gândit pentru web tradițional, nu pentru API-uri** – Identity se bazează pe cookie-uri de sesiune, ceea ce funcționează bine pentru aplicații MVC clasice. Însă dacă vreau să expun un API consumat de o aplicație mobilă sau un frontend Angular/React, am nevoie de autentificare prin JWT tokens — lucru care nu vine implicit și necesită configurare separată.
 
-- **Overhead** – pentru proiecte mici sau simple, vine cu multă complexitate și tabele care poate nu sunt necesare.
+- **Prea complex pentru proiecte simple** – Pentru o aplicație mică, Identity aduce zeci de tabele, sute de linii de configurare și dependențe suplimentare care pot fi excesive față de cerințele reale ale proiectului.
 
-- **Flexibilitate limitată** – dacă vrei un flux de autentificare nestandard (ex. login cu SMS, biometrie), trebuie să extinzi mult dincolo de ce oferă Identity implicit.
+- **Dificil de extins pentru fluxuri nestandard** – Dacă am nevoie de autentificare cu SMS, passkeys sau biometrie, Identity nu oferă suport nativ. Trebuie să implementez provideri custom, ceea ce înseamnă că pierd tocmai avantajul principal al folosirii unui framework gata făcut.
