@@ -78,7 +78,7 @@ public class ArticlesController : Controller
         return View(viewModel);
     }
 
-    // ✅ EXERCIȚIUL 1 - GET: /Articles/Create
+    //  EXERCIȚIUL 1 - GET: /Articles/Create
     [Authorize]
     public async Task<IActionResult> Create(CancellationToken cancellationToken)
     {
@@ -87,7 +87,7 @@ public class ArticlesController : Controller
         return View(viewModel);
     }
 
-    // ✅ EXERCIȚIUL 1 - POST: /Articles/Create
+    //  EXERCIȚIUL 1 - POST: /Articles/Create
     [HttpPost]
     [Authorize]
     [ValidateAntiForgeryToken]
@@ -104,7 +104,7 @@ public class ArticlesController : Controller
             Title = viewModel.Title,
             Content = viewModel.Content,
             CategoryId = viewModel.CategoryId,
-            AuthorId = User.FindFirstValue(ClaimTypes.NameIdentifier),  // ✅ EXERCIȚIUL 1 - AuthorId automat
+            AuthorId = User.FindFirstValue(ClaimTypes.NameIdentifier),  //  EXERCITIUL 1 - AuthorId automat
             PublishedAt = DateTime.UtcNow
         };
 
@@ -121,7 +121,7 @@ public class ArticlesController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    // ✅ EXERCIȚIUL 1+2 - GET: /Articles/Edit/5
+    //  EXERCIȚIUL 1+2 - GET: /Articles/Edit/5
     [Authorize]
     public async Task<IActionResult> Edit(int? id, CancellationToken cancellationToken)
     {
@@ -132,7 +132,7 @@ public class ArticlesController : Controller
         if (article == null)
             return NotFound();
 
-        // ✅ EXERCIȚIUL 2 - Verifică ownership
+        //  EXERCIȚIUL 2 - Verif ownership
         if (!IsOwnerOrAdmin(article))
             return Forbid();
 
@@ -149,7 +149,7 @@ public class ArticlesController : Controller
         return View(viewModel);
     }
 
-    // ✅ EXERCIȚIUL 1+2 - POST: /Articles/Edit/5
+    //  EXERCIȚIUL 1+2 - POST: /Articles/Edit/5
     [HttpPost]
     [Authorize]
     [ValidateAntiForgeryToken]
@@ -168,7 +168,7 @@ public class ArticlesController : Controller
         if (article == null)
             return NotFound();
 
-        // ✅ EXERCIȚIUL 2 - Verifică ownership
+        //  EXERCIȚIUL 2 - Verif ownership
         if (!IsOwnerOrAdmin(article))
             return Forbid();
 
@@ -193,7 +193,7 @@ public class ArticlesController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    // ✅ EXERCIȚIUL 1+2 - GET: /Articles/Delete/5
+    //  EXERCIȚIUL 1+2 - GET: /Articles/Delete/5
     [Authorize]
     public async Task<IActionResult> Delete(int? id, CancellationToken cancellationToken)
     {
@@ -204,7 +204,7 @@ public class ArticlesController : Controller
         if (article == null)
             return NotFound();
 
-        // ✅ EXERCIȚIUL 2 - Verifică ownership
+        //  EXERCIȚIUL 2 - Verif ownership
         if (!IsOwnerOrAdmin(article))
             return Forbid();
 
@@ -221,7 +221,7 @@ public class ArticlesController : Controller
         return View(viewModel);
     }
 
-    // ✅ EXERCIȚIUL 1+2 - POST: /Articles/Delete/5
+    //  EXERCIȚIUL 1+2 - POST: /Articles/Delete/5
     [HttpPost, ActionName("Delete")]
     [Authorize]
     [ValidateAntiForgeryToken]
@@ -231,7 +231,7 @@ public class ArticlesController : Controller
         if (article == null)
             return NotFound();
 
-        // ✅ EXERCIȚIUL 2 - Verifică ownership
+        //  EXERCIȚIUL 2 - Verifică ownership
         if (!IsOwnerOrAdmin(article))
             return Forbid();
 
@@ -239,7 +239,7 @@ public class ArticlesController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    // ✅ EXERCIȚIUL 2 - Helper method pentru ownership
+    // EXERCIȚIUL 2 - Helper method pentru ownership
     private bool IsOwnerOrAdmin(Article article)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
